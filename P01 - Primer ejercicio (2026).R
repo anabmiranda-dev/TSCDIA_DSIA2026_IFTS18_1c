@@ -203,50 +203,282 @@ plot(x, y,
 
 #Ejercicios iniciales
 
-#Ana
 #1 - Escriba un programa de R para tomar la entrada del usuario (nombre y edad) y mostrar los valores.
+secuencia_10_50 <- 10:50
+cat("La secuencia entre 10 y 50 es:", secuencia_10_50)
 
-#Fer
 #2 - Escriba un programa de R para obtener los detalles de los objetos en memoria. Hacerlo con un vector, variables y finalmente con un set de datos integrados.
+media_20_60 <- mean(20:60)
+cat("La media de los números del 20 al 60 es:", media_20_60)
 
-#Pablo
 #3 - Escribe un programa R para crear una secuencia de números del 10 al 50 y encuentra la media de los números del 20 al 60 y la suma de los números del 51 al 91.
+suma_51_91 <- sum(51:91)
+cat("La suma de los números del 51 al 91 es:", suma_51_91)
 
-#Flor
 #4 - Escribe un programa de R para crear un vector que contenga 10 valores enteros aleatorios entre -10 y +10.
 
-#Ana
+vector_aleatorio <- sample(-10:10, 10, replace = TRUE)
+cat("Los valores aleatorios son:", vector_aleatorio)
+
+
 #5 - Escribe un programa para imprimir únicamente los diez primeros vehículos del dataset de mtcars. Adicionalmente, que liste aparte las 5 primeras cilindradas.
 
-#Fer
+data(mtcars)
+diez_autos <- head(mtcars, 10)
+print(diez_autos)
+primeras5_cilindradas <- mtcars$cyl[1:5]
+print(primeras5_cilindradas)
+
 #6 - Cual es el promedio de cilindrada de los vehículos en mtcars?
 
-#Pablo
+data(mtcars)
+promedio <- mean(mtcars$cyl)
+cat("El promedio de cilindrada es:", promedio)
+
 #7 -Escribe un programa para guardar todos los hp de los vehículos de mtcars en un vector, calcular modo, media y mediana, e imprimir la información. Luego, ordenar los datos y mostrar los 10 superiores
 
-#Flor
+data(mtcars)
+hpvector <- mtcars$hp
+mediana <- median(hpvector)
+media <- mean(hpvector)
+tabla_frecuencias <- table(hpvector)
+moda <- as.numeric(names(tabla_frecuencias)[tabla_frecuencias == max(tabla_frecuencias)])
+cat("La moda es: ",moda, ", la mediana es: ", mediana," y la media es: ",media)
+ordenados <- sort(hpvector, decreasing = TRUE)
+top10 <- head(ordenados, 10)
+cat("Los 10 valores de HP superiores son:", top10)
+
+
 #8 (INVESTIGAR) Escribe un programa que contenga 3 vectores con 5 numeros al azar, luego, unir los tres vectores en una matriz, finalmente que muestre el contenido de la matriz, en cada ejecución la matriz debe cambiar (hint: cbind)
 
-#Ana
+vector1 <- sample(1:100, 5)
+vector2 <- sample(1:100, 5)
+vector3 <- sample(1:100, 5)
+matriz <- cbind(vector1, vector2, vector3)
+cat(matriz)
+
 #9 - Usando el dataset notten, escribir un programa que me indique la temperatura mas baja de todo el set, la maxima, y despues la minima y maxima por mes, y finalmente el minimo, maximo y promedio por año.
 
-#Fer
+data_nottem <- data.frame(
+  Temperatura = as.vector(nottem),
+  Anio = floor(time(nottem)),
+  Mes = cycle(nottem)
+)
+temp_min_total <- min(data_nottem$Temperatura)
+temp_max_total <- max(data_nottem$Temperatura)
+stats_por_mes <- data_nottem %>%
+  group_by(Mes) %>%
+  summarise(
+    Minima = min(Temperatura),
+    Maxima = max(Temperatura)
+  )
+stats_por_anio <- data_nottem %>%
+  group_by(Anio) %>%
+  summarise(
+    Minimo = min(Temperatura),
+    Maximo = max(Temperatura),
+    Promedio = mean(Temperatura)
+  )
+cat("Temperatura más baja histórica:", temp_min_total, "°F\n")
+cat("Temperatura más alta histórica:", temp_max_total, "°F\n\n")
+cat("MÍNIMAS Y MÁXIMAS POR MES (1-12)\n")
+print(stats_por_mes)
+
+cat("\nMÍNIMO, MÁXIMO Y PROMEDIO POR AÑO\n")
+print(stats_por_anio)
+
 #10 - Crear un dataset que contenga el nombre, apellido, edad, año de nacimiento, mes de nacimiento y día de nacimiento de cada miembro de su grupo. Puede hacerse directamente o con cbind. Una vez hecho, que muestre el contenido, que indique la edad maxima, la minima y el promedio de edad del grupo.
 
-#Pablo
+# 1. Creación de los vectores con la información
+nombres   <- c("Ana", "Luis", "Pedro", "Elena")
+apellidos <- c("García", "Rodríguez", "Pérez", "Martínez")
+edades    <- c(24, 30, 22, 28)
+anios     <- c(2002, 1996, 2004, 1998)
+meses     <- c("Mayo", "Agosto", "Enero", "Diciembre")
+dias      <- c(15, 2, 28, 10)
+
+# 2. Creación del dataset (usando data.frame para preservar tipos de datos)
+grupo_df <- data.frame(
+  Nombre = nombres,
+  Apellido = apellidos,
+  Edad = edades,
+  Anio_Nacimiento = anios,
+  Mes_Nacimiento = meses,
+  Dia_Nacimiento = dias
+)
+
+# 3. Mostrar el contenido del dataset
+print("--- Contenido del Grupo ---")
+print(grupo_df)
+
+# 4. Cálculos estadísticos de la edad
+edad_maxima   <- max(grupo_df$Edad)
+edad_minima   <- min(grupo_df$Edad)
+edad_promedio <- mean(grupo_df$Edad)
+
+# 5. Mostrar resultados
+cat("\n--- Estadísticas de Edad ---")
+cat("\nEdad Máxima:  ", edad_maxima)
+cat("\nEdad Mínima:  ", edad_minima)
+cat("\nEdad Promedio:", edad_promedio, "\n")
+
 #11 - (INVESTIGAR) Usando el dataset creado en el ejercicio 10, imprimir el resumen de la información. Probar de hacer lo mismo con iris.
 
-#Flor
+# Imprimir el resumen estadístico del grupo
+print("--- RESUMEN DATASET GRUPO ---")
+summary(grupo_df)
+# Imprimir el resumen del dataset iris
+print("--- RESUMEN DATASET IRIS ---")
+summary(iris)
+
+
 #12 Del set IRIS, ordenar indicar el promedio de longitud de pétalos, solamente de la especie setosa. Luego indicar el máximo de longitud de pétalo, solo de la especie virginica. (Se puede resolver solo con lo aclarado en esta guía pero hay formas mas elegantes de hacerlo)
 
-#Ana
+# 1. Promedio de longitud de pétalos (Petal.Length) solo para SETOSA
+promedio_setosa <- mean(iris$Petal.Length[iris$Species == "setosa"])
+
+# 2. Máximo de longitud de pétalo (Petal.Length) solo para VIRGINICA
+maximo_virginica <- max(iris$Petal.Length[iris$Species == "virginica"])
+
+# --- Mostrar resultados ---
+cat("Promedio de longitud de pétalo (Setosa):", promedio_setosa, "cm\n")
+cat("Máximo de longitud de pétalo (Virginica):", maximo_virginica, "cm\n")
+
+### Forma mas moderna
+#iris %>%
+#  group_by(Species) %>%
+#  summarise(
+#    Promedio_Petalo = mean(Petal.Length),
+#    Maximo_Petalo = max(Petal.Length)
+#  ) %>%
+#  filter(Species %in% c("setosa", "virginica"))
+###
+
+
 #13 Usando el dataset de nhtemp, cual es el promedio total de temperaturas? cual es el promedio total de temperaturas entre 1912 y 1922, y cual es el promedio de temperaturas entre 1961 y 1971. En todos los casos, cual es el mínimo y el máximo.
 
-#Ana
+# 1. Cálculos para el total del dataset (1912 - 1971)
+promedio_total <- mean(nhtemp)
+min_total <- min(nottem) # Mínimo histórico
+max_total <- max(nhtemp) # Máximo histórico
+
+# 2. Período 1912 - 1922
+periodo_1 <- window(nhtemp, start = 1912, end = 1922)
+prom_1 <- mean(periodo_1)
+min_1  <- min(periodo_1)
+max_1  <- max(periodo_1)
+
+# 3. Período 1961 - 1971
+periodo_2 <- window(nhtemp, start = 1961, end = 1971)
+prom_2 <- mean(periodo_2)
+min_2  <- min(periodo_2)
+max_2  <- max(periodo_2)
+
+# --- Impresión de resultados ---
+
+cat("--- ESTADÍSTICAS TOTALES (1912-1971) ---\n")
+cat("Promedio:", promedio_total, "| Mín:", min_total, "| Máx:", max_total, "\n\n")
+
+cat("--- PERÍODO INICIAL (1912-1922) ---\n")
+cat("Promedio:", prom_1, "| Mín:", min_1, "| Máx:", max_1, "\n\n")
+
+cat("--- PERÍODO FINAL (1961-1971) ---\n")
+cat("Promedio:", prom_2, "| Mín:", min_2, "| Máx:", max_2, "\n")
+
+
 #13 Usando el dataset mtcars, indicar cuantos vehículos tienen caja de cambios en números impares
 
-#Fer
+# Filtramos los vehículos con marchas impares (3 o 5)
+vehiculos_impares <- mtcars[mtcars$gear %% 2 != 0, ]
+
+# Contamos el total de filas
+cantidad_impares <- nrow(vehiculos_impares)
+
+# Mostramos el resultado
+cat("Cantidad de vehículos con caja de cambios de números impares:", cantidad_impares, "\n")
+
+# Si quieres ver cuáles son:
+print("Detalle de los vehículos:")
+print(vehiculos_impares[, "gear", drop = FALSE])
+
+
 #14 Calcular la relación entre los cilindros y el hp de los vehículos en mtcars y mostrarlo. Luego calcular, modo, mediana y promedio
 
-#Pablo
+# 1. Relación: HP promedio por cada cantidad de cilindros
+relacion_cyl_hp <- aggregate(hp ~ cyl, data = mtcars, FUN = mean)
+colnames(relacion_cyl_hp) <- c("Cilindros", "HP_Promedio")
+
+print("--- Relación: Potencia promedio según cilindrada ---")
+print(relacion_cyl_hp)
+
+# 2. Cálculos Estadísticos del HP (Todo el dataset)
+
+# Promedio
+promedio_hp <- mean(mtcars$hp)
+
+# Mediana
+mediana_hp <- median(mtcars$hp)
+
+# Modo (R no tiene una función 'mode' estadística integrada, la creamos)
+calcular_moda <- function(x) {
+  tabla <- table(x)
+  moda <- as.numeric(names(tabla[tabla == max(tabla)]))
+  return(moda)
+}
+moda_hp <- calcular_moda(mtcars$hp)
+
+# --- Mostrar resultados ---
+cat("\n--- Estadísticas Generales de HP ---\n")
+cat("Promedio:", promedio_hp, "\n")
+cat("Mediana :", mediana_hp, "\n")
+cat("Modo    :", moda_hp, "\n")
+
 #15 - Usando cualquier dataset en datasets::, hacer un estudio aplicando todo lo visto hasta ahora, este ejercicio es libre, pero se pide al menos un resumen, mediana, modo, promedio, alguna relación, top de información, etc. Esta información tiene que tener sentido y ser consistente dentro de los datos analizados.
+
+# 1. Preparación y Resumen General
+# El dataset registra: weight (peso), Time (días), Chick (ID pollito) y Diet (1 a 4)
+print("--- RESUMEN GENERAL DEL CRECIMIENTO ---")
+summary(ChickWeight)
+
+# 2. Estadísticas Descriptivas del Peso (Weight)
+promedio_peso <- mean(ChickWeight$weight)
+mediana_peso  <- median(ChickWeight$weight)
+
+# Función para calcular la moda
+calcular_moda <- function(x) {
+  tabla <- table(x)
+  return(as.numeric(names(tabla[tabla == max(tabla)])))
+}
+moda_peso <- calcular_moda(ChickWeight$weight)
+
+cat("\n--- ESTADÍSTICAS DE PESO (Gramos) ---")
+cat("\nPromedio:", promedio_peso)
+cat("\nMediana :", mediana_peso)
+cat("\nModo    :", moda_peso, "(Peso más frecuente al nacer)\n")
+
+# 3. Relación: Rendimiento por Dieta
+# Analizamos el peso promedio final para ver cuál dieta es más efectiva
+# Filtramos por el último día de medición (Tiempo 21)
+pesos_finales <- ChickWeight[ChickWeight$Time == 21, ]
+
+relacion_dieta_peso <- aggregate(weight ~ Diet, data = pesos_finales, FUN = mean)
+colnames(relacion_dieta_peso) <- c("Dieta", "Peso_Final_Promedio")
+
+print("\n--- RELACIÓN: EFECTIVIDAD POR DIETA (Día 21) ---")
+print(relacion_dieta_peso)
+
+# 4. Top de Información: Los 5 pollitos más grandes al final del estudio
+top_5_pollitos <- pesos_finales[order(-pesos_finales$weight), ]
+top_5_pollitos <- head(top_5_pollitos, 5)
+
+print("\n--- TOP 5 POLLITOS MÁS PESADOS (Final del estudio) ---")
+print(top_5_pollitos[, c("Chick", "weight", "Diet")])
+
+# 5. Análisis de Extremos
+# Queremos saber la diferencia de peso entre el nacer y el final
+peso_min_nacer <- min(ChickWeight$weight[ChickWeight$Time == 0])
+peso_max_final <- max(ChickWeight$weight[ChickWeight$Time == 21])
+
+cat("\n--- CONSISTENCIA DE DATOS ---")
+cat("\nEl estudio inició con pollitos de:", peso_min_nacer, "g")
+cat("\nEl peso máximo alcanzado fue de:", peso_max_final, "g")
